@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.8">
+  <link rel="icon" href="./favicon.ico">
+  <!--import styles-->
+  <link rel="stylesheet" href="./public/styles/material.indigo-pink.min.css">
+  <link rel="stylesheet" href="./public/styles/index.css">
+  <link rel="stylesheet" href="./src/assets/main.css">
+  <!--import jq-->
+  <!--import mdui-->
+  <script type="module">
+    import 'mdui/mdui.css';
+    import 'mdui';
+  </script>
+  <!--import blockly-->
+  <script src="./scripts/blockly.min.js"></script>
+  <script src="./scripts/blocks.js"></script>
+  <script src="./scripts/custom_render.js"></script>
+  <!-- Filled -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Box3 Blockly 3.0</title>
+</head>
+
+<body class="mdui-color-indigo-accent mdui-color-theme-500">
+  <div class="loading-box">
+    <mdui-linear-progress></mdui-linear-progress>
+    <div style="margin:auto;text-align: center;">
+      <mdui-circular-progress></mdui-circular-progress>
+      <div
+        style="margin-top: 10px; font-size: 25pt; font-weight: 900; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; background: linear-gradient(-210deg, #247cce, #45065e); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Box3 Blockly
+      </div>
+      <div
+        style="color: rgba(0, 0, 0, 0); font-weight:900;-webkit-text-stroke: 1px #212b4b; font-style:italic; font-size: 20pt; font-family:'Courier New', Courier, monospace">
+        创意无限
+      </div>
+    </div>
+  </div>
+  <div id="app"></div>
+  <div class="workspace" id="workspace">
+    <div class="blockly-editor">
+      <div id="blocklyDiv" style="width: 100%; height: 100%"></div>
+    </div>
+    <div class="resize-hr" style="display: none;"></div>
+    <div id="monaco-editor" style="width: 30%;"></div>
+  </div>
+  <xml id="toolbox" style="display:none;">
+    <category name="事件" colour="#0074FF">
+      <block type="whenStart"></block>
+      <block type="onPlayerJoin">
+        <value name="value">
+          <shadow type="joinEntity">
+          </shadow>
+        </value>
+      </block>
+      <block type="joinEntity"></block>
+      <block type="onPlayerLeave">
+        <value name="value">
+          <shadow type="leaveEntity">
+          </shadow>
+        </value>
+      </block>
+      <block type="leaveEntity"></block>
+      <block type="onInteract">
+        <value name="value">
+          <shadow type="interactEntity">
+          </shadow>
+        </value>
+        <value name="value1">
+          <shadow type="targetEntity">
+          </shadow>
+        </value>
+      </block>
+      <block type="interactEntity"></block>
+      <block type="targetEntity"></block>
+      <block type="onEntityContact">
+        <value name="value">
+          <shadow type="contactEntity">
+          </shadow>
+        </value>
+        <value name="value1">
+          <shadow type="other">
+          </shadow>
+        </value>
+        <value name="value2">
+          <shadow type="force">
+          </shadow>
+        </value>
+        <value name="value3">
+          <shadow type="axis">
+          </shadow>
+        </value>
+      </block>
+      <block type="contactEntity"></block>
+      <block type="other"></block>
+      <block type="force"></block>
+      <block type="axis"></block>
+    </category>
+    <category name="控制" colour="#40BCFF">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+      <block type="controls_for">
+        <value name="BY">
+          <shadow type="math_number"></shadow>
+        </value>
+        <value name="FROM">
+          <shadow type="math_number"></shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+      <block type="controls_forEach">
+      </block>
+      <block type="controls_flow_statements"></block>
+      <block type="controls_if"></block>
+      <block type="controls_ifelse"></block>
+      <block type="note">
+        <field name="VALUE">一个注释</field>
+      </block>
+      <block type="sleep">
+        <value name="Number">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="output">
+        <value name="Text">
+          <block type="text">
+            <field name="TEXT">Hello,Game!</field>
+          </block>
+        </value>
+      </block>
+      <block type="clearConsole"></block>
+      <block type="outError">
+        <value name="Text">
+          <block type="text">
+            <field name="TEXT">Error:Hello,Game!</field>
+          </block>
+        </value>
+      </block>
+      <block type="outWarn">
+        <value name="Text">
+          <block type="text">
+            <field name="TEXT">Warn:Hello,Game!</field>
+          </block>
+        </value>
+      </block>
+      <block type="outDeBug">
+        <value name="Text">
+          <block type="text">
+            <field name="TEXT">Hello,Game!</field>
+          </block>
+        </value>
+      </block>
+    </category>
+    <category name="世界" colour="#CD40FF">
+      <block type="GameWorld"></block>
+      <block type="projectName"></block>
+      <block type="url"></block>
+      <block type="anEntity">
+        <value name="Name">
+          <shadow type="text"></shadow>
+        </value>
+      </block>
+      <block type="worldQuerySelector">
+        <comment>http://docs.Game.codemao.cn/Gameworld.html#search-%E6%90%9C%E7%B4%A2</comment>
+        <field name="s">#实体</field>
+      </block>
+      <block type="allEntity">
+        <comment>将返回一个数组</comment>
+      </block>
+      <block type="WSay">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT">Hello,Game!</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="gravity">
+        <value name="Number">
+          <shadow type="math_number">
+            <field name="NUM">-1.1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="airFriction">
+        <value name="number">
+          <shadow type="math_number">
+            <field name="NUM">0.001</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="maxFog">
+        <value name="number">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="fogColor">
+        <value name="color">
+          <block type="rgbColor">
+          </block>
+        </value>
+      </block>
+      <block type="fogStartDistance">
+        <value name="number">
+          <shadow type="math_number">
+          </shadow>
+        </value>
+      </block>
+      <block type="fogHeightOffset">
+        <value name="number">
+          <shadow type="math_number">
+          </shadow>
+        </value>
+      </block>
+      <block type="fogUniformDensity">
+        <value name="number">
+          <shadow type="math_number">
+          </shadow>
+        </value>
+      </block>
+      <block type="fogHeightFalloff">
+        <value name="number">
+          <shadow type="math_number">
+          </shadow>
+        </value>
+      </block>
+      <block type="rainSpeed">
+        <value name="number">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+      <block type="rainColor">
+        <value name="color">
+          <block type="rgbaColor">
+          </block>
+        </value>
+      </block>
+      <block type="rainDirection">
+        <value name="direction">
+          <block type="vector3">
+          </block>
+        </value>
+      </block>
+      <block type="rainDensity">
+        <value name="num">
+          <shadow type="math_number">
+          </shadow>
+        </value>
+      </block>
+      <block type="rainInterference">
+        <value name="num">
+          <shadow type="math_number">
+          </shadow>
+        </value>
+      </block>
+      <block type="rainSizeLo">
+        <value name="num">
+          <shadow type="math_number">
+          </shadow>
+        </value>
+      </block>
+      <block type="rainSizeHi">
+        <value name="num">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="snowColor">
+        <value name="color">
+          <block type="rgbaColor">
+          </block>
+        </value>
+      </block>
+      <block type="snowTexture">
+      </block>
+      <block type="snowDensity">
+        <value name="num">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="snowFallSpeed">
+        <value name="num">
+          <shadow type="math_number">
+          </shadow>
+        </value>
+      </block>
+      <block type="snowSpinSpeed">
+        <value name="vector3">
+          <block type="vector3">
+          </block>
+        </value>
+      </block>
+      <block type="snowSizeLo">
+        <value name="num">
+          <shadow type="math_number">
+          </shadow>
+        </value>
+      </block>
+      <block type="snowSizeHi">
+        <value name="num">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lightMode"></block>
+      <block type="sunFrequency">
+        <value name="number">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="sunPhase">
+        <comment>https://docs.Game.codemao.cn/Gameworld.html#worldsunphase</comment>
+        <value name="number">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lunarPhase">
+        <comment>https://docs.Game.codemao.cn/Gameworld.html#worldlunarphase</comment>
+        <value name="number">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="sunDirection">
+        <value name="vector">
+          <block type="vector3">
+            <value name="X">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="Y">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="Z">
+              <shadow type="math_number"></shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+      <block type="sunLight">
+        <value name="rgb">
+          <block type="rgbColor">
+            <value name="R">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="G">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="B">
+              <shadow type="math_number"></shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+      <block type="skyLeftLight">
+        <value name="rgb">
+          <block type="rgbColor">
+            <value name="R">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="G">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="B">
+              <shadow type="math_number"></shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+      <block type="skyRightLight">
+        <value name="rgb">
+          <block type="rgbColor">
+            <value name="R">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="G">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="B">
+              <shadow type="math_number"></shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+      <block type="skyBottomLight">
+        <value name="rgb">
+          <block type="rgbColor">
+            <value name="R">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="G">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="B">
+              <shadow type="math_number"></shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+      <block type="skyTopLight">
+        <value name="rgb">
+          <block type="rgbColor">
+            <value name="R">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="G">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="B">
+              <shadow type="math_number"></shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+      <block type="skyFrontLight">
+        <value name="rgb">
+          <block type="rgbColor">
+            <value name="R">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="G">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="B">
+              <shadow type="math_number"></shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+      <block type="skyBackLight">
+        <value name="rgb">
+          <block type="rgbColor">
+            <value name="R">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="G">
+              <shadow type="math_number"></shadow>
+            </value>
+            <value name="B">
+              <shadow type="math_number"></shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+    </category>
+    <category name="实体" colour="#FF4281">
+      <block type="GameEntity"></block>
+      <block type="entityObject">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="entityMesh">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="mesh">
+          <shadow type="text">
+            <field name="TEXT">mesh/实体.vb</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="entityPosition">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="pos">
+          <block type="vector3"></block>
+        </value>
+      </block>
+      <block type="entityScale">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="scale">
+          <block type="vector3"></block>
+        </value>
+      </block>
+      <block type="entityColor">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="color">
+          <block type="rgbaColor"></block>
+        </value>
+      </block>
+      <block type="entityInvisible">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="entityEmissive">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="number">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+      <block type="entityMetaIness">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="number">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+      <block type="entityShininess">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="number">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+      <block type="entityOffset">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="offset">
+          <block type="vector3"></block>
+        </value>
+      </block>
+      <block type="entityBounds">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="entityCollides">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="entityFixed">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="entityFriction">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="entityGravity">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="entityMass">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="num">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="entityRestitution">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="entityVelocity">
+        <comment>设置实体的移动方向</comment>
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="vector3">
+          <block type="vector3"></block>
+        </value>
+      </block>
+      <block type="entityContactForce">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="entitySay">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="text">
+          <shadow type="text">
+            <field name="TEXT">Hello,Game!</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="entityEnableInteract">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="entityInteractRadius">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="num">
+          <shadow type="math_number">
+            <field name="NUM">16</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="entityInteractHint">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="hint">
+          <shadow type="text">
+            <field name="TEXT">npc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="entityInteractColor">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="color">
+          <block type="rgbColor"></block>
+        </value>
+      </block>
+    </category>
+    <category name="方块" colour="#30BF82">
+      <block type="GameVoxels"></block>
+      <block type="setVoxel">
+        <value name="X">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="Y">
+          <shadow type="math_number">
+            <field name="NUM">8</field>
+          </shadow>
+        </value>
+        <value name="Z">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <field name="VOXEL">dirt</field>
+      </block>
+      <block type="setVoxelId">
+        <value name="X">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="Y">
+          <shadow type="math_number">
+            <field name="NUM">8</field>
+          </shadow>
+        </value>
+        <value name="Z">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="VOXEL">
+          <shadow type="math_number">
+            <field name="NUM"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="getVoxel">
+        <value name="X">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="Y">
+          <shadow type="math_number">
+            <field name="NUM">8</field>
+          </shadow>
+        </value>
+        <value name="Z">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="voxelsId">
+        <value name="name">
+          <shadow type="text">
+            <field name="TEXT">dirt</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="voxelsName">
+        <value name="id">
+          <shadow type="math_number">
+            <field name="NUM">2</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="玩家" colour="#FF737D">
+      <block type="GamePlayer"></block>
+      <block type="playerName">
+        <value name="entity">
+          <shadow type="GameEntity">
+          </shadow>
+        </value>
+      </block>
+      <block type="playerBoxId">
+        <value name="entity">
+          <shadow type="GameEntity">
+          </shadow>
+        </value>
+      </block>
+      <block type="playerUserKey">
+        <value name="entity">
+          <shadow type="GameEntity">
+          </shadow>
+        </value>
+      </block>
+      <block type="playerSpawnPoint">
+        <value name="entity">
+          <shadow type="GameEntity">
+          </shadow>
+        </value>
+        <value name="pos">
+          <block type="vector3"></block>
+        </value>
+      </block>
+      <block type="playerMovementBounds">
+        <value name="entity">
+          <shadow type="GameEntity">
+          </shadow>
+        </value>
+        <value name="pos">
+          <block type="vector3"></block>
+        </value>
+      </block>
+      <block type="playerDirectMessage">
+        <value name="entity">
+          <shadow type="GameEntity">
+          </shadow>
+        </value>
+        <value name="chat">
+          <shadow type="text">
+            <field name="TEXT">Hello,Game!</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="playerMuted">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="playerColor">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="color">
+          <block type="rgbColor"></block>
+        </value>
+      </block>
+      <block type="playerEmissive">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="number">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+      <block type="playerInvisible">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="playerShowName">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="playerScale">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="scale">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="playerMetalness">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="num">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+      <block type="playerShininess">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="num">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+      <block type="playerCanFly">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="playerSpectator">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="playerEnableJump">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="playerEnableDoubleJump">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+      </block>
+      <block type="playerWalkSpeed">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="number">
+          <shadow type="math_number">
+            <field name="NUM">0.22</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="playerRunSpeed">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="number">
+          <shadow type="math_number">
+            <field name="NUM">0.4</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="playerRunAcceleration">
+        <value name="entity">
+          <shadow type="GameEntity"></shadow>
+        </value>
+        <value name="number">
+          <shadow type="math_number">
+            <field name="NUM">0.35</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="文本" colour="%{BKY_TEXTS_HUE}">
+      <block type="text"></block>
+      <block type="text_join">
+      </block>
+      <block type="text_length"></block>
+      <block type="text_append"></block>
+      <block type="text_isEmpty"></block>
+      <block type="text_indexOf"></block>
+      <block type="text_charAt"></block>
+    </category>
+    <category name="运算" colour="%{BKY_MATH_HUE}">
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+      <block type="math_single"></block>
+      <block type="math_trig"></block>
+      <block type="math_constant"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"> </block>
+      <block type="logic_boolean"></block>
+      <block type="math_number_property"></block>
+    </category>
+    <category name="向量" colour="#42FF42">
+      <block type="vector3">
+        <value name="X">
+          <shadow type="math_number"></shadow>
+        </value>
+        <value name="Y">
+          <shadow type="math_number"></shadow>
+        </value>
+        <value name="Z">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+    </category>
+    <category name="色彩" colour="%{BKY_RGB_HUE}">
+      <block type="rgbColor">
+        <value name="R">
+          <shadow type="math_number"></shadow>
+        </value>
+        <value name="G">
+          <shadow type="math_number"></shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number"></shadow>
+        </value>
+      </block>
+      <block type="rgbaColor">
+        <value name="R">
+          <shadow type="math_number"></shadow>
+        </value>
+        <value name="G">
+          <shadow type="math_number"></shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number"></shadow>
+        </value>
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="变量" custom="VARIABLE" colour="%{BKY_VARIABLES_HUE}"></category>
+    <category name="数组" colour="#FFD300">
+      <block type="lists_create_with">
+        <mutation items="0"></mutation>
+      </block>
+      <block type="lists_create_with"></block>
+      <block type="lists_repeat">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">数组</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getIndex">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">数组</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_setIndex">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">数组</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getSublist">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">数组</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_split">
+        <value name="DELIM">
+          <shadow type="text">
+            <field name="TEXT">,</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_sort"></block>
+    </category>
+    <category name="函数" custom="PROCEDURE" colour="#FF7400"></category>
+  </xml>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
