@@ -6,7 +6,7 @@ import { readonly, provide, inject } from 'vue'
 //全局属性
 const appname = 'Box3 Blockly 3.0'
 const appversion = '0w01'
-const appgit = 'https://github.com/codestarlabs/box3-blockly3'
+const appgit = 'https://github.com/CodeStarLabs/Box3-Blockly-3.0'
 
 //依赖注入
 provide('appname', appname)
