@@ -30,9 +30,9 @@ function resize() {
 
 Blockly.mainWorkspace.addChangeListener(function (event) {
   const code =
-    '//代码由https://box3.codestarlabs.top/blockly3生成\n' +
+    '//代码由Box3 Blockly3.0生成\n' +
     Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)
-  monacoEditor.setValue(code)
+  monacoEditor.setValue(code);
 })
 
 resize_ele.addEventListener('mousedown', function (ev) {
